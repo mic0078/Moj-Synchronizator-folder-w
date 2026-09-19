@@ -1,0 +1,53 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\andro\\Desktop\\Moj Synchronizator folder\u00F3w\\EchoSync_VS\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{5E3C2A70-9B1D-4F6E-8A21-D0C4E7B3A911}|EchoSync\\EchoSync.csproj|c:\\users\\andro\\desktop\\moj synchronizator folder\u00F3w\\echosync_vs\\echosync\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{5E3C2A70-9B1D-4F6E-8A21-D0C4E7B3A911}|EchoSync\\EchoSync.csproj|solutionrelative:echosync\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5E3C2A70-9B1D-4F6E-8A21-D0C4E7B3A911}|EchoSync\\EchoSync.csproj|c:\\users\\andro\\desktop\\moj synchronizator folder\u00F3w\\echosync_vs\\echosync\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5E3C2A70-9B1D-4F6E-8A21-D0C4E7B3A911}|EchoSync\\EchoSync.csproj|solutionrelative:echosync\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "MainForm.cs [Projekt]",
+              "DocumentMoniker": "C:\\Users\\andro\\Desktop\\Moj Synchronizator folder\u00F3w\\EchoSync_VS\\EchoSync\\MainForm.cs",
+              "RelativeDocumentMoniker": "EchoSync\\MainForm.cs",
+              "ToolTip": "C:\\Users\\andro\\Desktop\\Moj Synchronizator folder\u00F3w\\EchoSync_VS\\EchoSync\\MainForm.cs [Projekt]*",
+              "RelativeToolTip": "EchoSync\\MainForm.cs [Projekt]*",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-19T00:23:30.953Z",
+              "EditorCaption": " [Projekt]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "MainForm.cs",
+              "DocumentMoniker": "C:\\Users\\andro\\Desktop\\Moj Synchronizator folder\u00F3w\\EchoSync_VS\\EchoSync\\MainForm.cs",
+              "RelativeDocumentMoniker": "EchoSync\\MainForm.cs",
+              "ToolTip": "C:\\Users\\andro\\Desktop\\Moj Synchronizator folder\u00F3w\\EchoSync_VS\\EchoSync\\MainForm.cs*",
+              "RelativeToolTip": "EchoSync\\MainForm.cs*",
+              "ViewState": "AgIAAHAHAAAAAAAAAAAtwIYHAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-19T00:23:08.405Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

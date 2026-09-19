@@ -1,0 +1,359 @@
+===============================================================================
+  ECHO SYNC
+  synchronizacja i kopie lustrzane - dyski lokalne i sieciowe
+===============================================================================
+
+  CZESC 0 - NAJWAZNIEJSZE W JEDNYM ZDANIU
+  CZESC 1 - KROTKA INSTRUKCJA           (zacznij tutaj)
+  CZESC 2 - WSZYSTKIE FUNKCJE
+  CZESC 3 - WYKRYWANIE USUNIEC
+  CZESC 4 - BEZPIECZENSTWO I ZASOBY
+
+
+###############################################################################
+  CZESC 0 - NAJWAZNIEJSZE W JEDNYM ZDANIU
+###############################################################################
+
+      NIE TYLKO SYNCHRONIZUJE. PAMIETA, CO BYLO WCZESNIEJ.
+
+  Zwykly synchronizator dziala na slepo: porownuje to, co widzi TERAZ, i wykonuje.
+  Jesli pomylisz kierunek albo ktos skasuje pliki po drugiej stronie - dowiesz sie
+  o tym po fakcie, a dane juz nie wroca.
+
+  Echo Sync zapamietuje poprzedni stan. Dzieki temu potrafi trzy rzeczy, ktorych
+  prosty synchronizator nie umie:
+
+     1. ROZROZNIC USUNIECIE OD NOWEGO PLIKU
+        Usuniecie nie zostawia daty, wiec "jest tu, nie ma tam" wyglada tak samo
+        dla skasowanego i dla nowego pliku. Bez pamieci stanu tego nie da sie
+        rozstrzygnac - i dlatego inne programy po prostu kopiuja skasowane z powrotem.
+
+     2. ZATRZYMAC SIE I ZAPYTAC, ZANIM DANE ZNIKNA
+        Wykryte usuniecia nie sa wykonywane automatycznie. Pliki sa odkladane
+        na bok, a Ty decydujesz: przywrocic czy usunac takze u siebie.
+
+     3. COFNAC SKUTKI BLEDNEJ DECYZJI
+        Pomyliles strone? Synchronizacja poszla w zla stronie i nadpisala dobra
+        wersje stara? Poprzednia wersja lezy w _SyncArchive, w podfolderze z data.
+        To samo dotyczy usunietych plikow. Nic nie znika po cichu i bez sladu.
+
+  A przy tym w spoczynku nie robi praktycznie nic: 0,05 % jednego rdzenia.
+  Porownanie 680 pozycji po obu stronach przez dysk sieciowy - okolo sekundy.
+
+
+  CO SIE NIE COFNIE - uczciwie:
+     - gdy wylaczysz opcje "Zachowuj poprzednie wersje nadpisanych plikow",
+     - gdy ustawisz usuwanie na "Kosz Windows" (nie dziala na dyskach sieciowych)
+       albo "Trwale",
+     - gdy sam wyczyscisz _SyncArchive przyciskiem "Archiwum kopii" albo gdy
+       zrobi to za Ciebie ustawione tam automatyczne sprzatanie po N dniach
+       (domyslnie wylaczone - nic nie znika samo).
+  Przy ustawieniach domyslnych wszystkie trzy zabezpieczenia sa wlaczone.
+
+
+###############################################################################
+  CZESC 1 - KROTKA INSTRUKCJA
+###############################################################################
+
+PIERWSZE ZADANIE W PIEC KROKOW
+
+  1. Kliknij NOWE po lewej stronie.
+
+  2. Wskaz foldery: LEWY i PRAWY.
+     Przycisk "Sprawdz" mowi od razu, czy folder istnieje i ile w nim jest
+     pozycji - lepiej zlapac literowke teraz niz po synchronizacji.
+
+  3. Ustaw kierunek strzalka na gorze (klikniecie zmienia):
+        w prawo       - lewy jest zrodlem
+        w lewo        - prawy jest zrodlem
+        dwukierunkowo - nowsze wygrywa, obie strony sie uzupelniaja
+
+  4. Zdecyduj o dwoch rzeczach:
+        "Twórz w celu podfolder..."  - zwykle TAK, zeby nie wysypywac plikow
+                                       wprost do korzenia dysku
+        "Usuwane pliki"              - zostaw "_SyncArchive", to najbezpieczniejsze
+
+  5. ZAPISZ, potem SYNCHRONIZUJ.
+
+  WAZNE: automatyka rusza dopiero po pierwszej RECZNEJ synchronizacji. To nie
+  usterka - program czeka, az potwierdzisz, ze kierunek i foldery sa dobre.
+  Dopoki czeka, przy zadaniu widnieje znak pauzy.
+
+
+CO ROBIC NA CO DZIEN
+
+  Nic. Program siedzi przy zegarku i pracuje sam. Zaglada sie do niego wtedy,
+  gdy pojawi sie zolty pasek z pytaniem o usuniete pliki (patrz CZESC 3).
+
+
+GDY COS IDZIE NIE TAK
+
+  Zmiany nie ida          -> sprawdz, czy przy zadaniu nie ma znaku pauzy.
+                             Jesli jest: kliknij SYNCHRONIZUJ jeden raz.
+  Nie wiem, co sie stanie -> ANALIZUJ. Pokazuje liste zmian i NIC nie rusza.
+  Cos skasowalo sie samo  -> zajrzyj do _SyncArchive w folderze docelowym,
+                             pliki leza tam w podfolderach z data.
+  Chce zobaczyc historie  -> zakladka DZIENNIK (najnowsze na gorze), a pelne
+                             zapisy w podfolderze "logi".
+
+
+###############################################################################
+  CZESC 2 - WSZYSTKIE FUNKCJE
+###############################################################################
+
+-------------------------------------------------------------------------------
+2.1  KIERUNKI I TRYBY
+-------------------------------------------------------------------------------
+  W prawo / w lewo    Jedna strona jest zrodlem, druga sie do niej dostosowuje.
+  Dwukierunkowo       Nowszy plik wygrywa. Gdy obie strony maja ten sam plik
+                      z ta sama data, ale innym rozmiarem - program NIE zgaduje,
+                      tylko zglasza konflikt i pomija.
+  Kopia lustrzana     Cel staje sie doslowna kopia zrodla: co zniknie w zrodle,
+                      znika w celu; nowsze w celu jest nadpisywane.
+                      Dostepne tylko dla kierunkow jednostronnych.
+
+  Zamien foldery miejscami   Zamienia lewy z prawym jednym klikiem.
+  Podfolder w celu           Tworzy w celu podfolder o nazwie folderu zrodlowego.
+
+-------------------------------------------------------------------------------
+2.2  KIEDY SIE URUCHAMIA
+-------------------------------------------------------------------------------
+  Co N minut             Zwykly harmonogram, od 1 minuty do tygodnia.
+
+  Po wykryciu zmian      Czas rzeczywisty - program slucha zmian w folderze,
+                         nie odpytuje dysku w kolko. Czeka, az ucichnie:
+                         5 s / 30 s / 1 min / 3 min / 5 min (do wyboru).
+
+                         Zabezpieczenie: jesli w folderze caly czas cos sie
+                         dzieje i cisza nie nastaje, synchronizuje najpozniej
+                         po TRZYKROTNOSCI wybranego czasu. Zmiany nie moga
+                         utknac w nieskonczonosc.
+
+  Oba naraz              Mozna zaznaczyc i harmonogram, i czas rzeczywisty.
+
+  Automatyka wlaczona    Glowny wylacznik dla wszystkich zadan.
+  Wstrzymaj automatyke   To samo z menu ikony przy zegarku.
+  Uruchamiaj z Windows   Start razem z systemem, od razu do zasobnika.
+
+-------------------------------------------------------------------------------
+2.3  CO JEST KOPIOWANE, A CO POMIJANE
+-------------------------------------------------------------------------------
+  Wykluczenia        Wzorce oddzielone srednikiem, np.:
+                        Thumbs.db;desktop.ini;~$*;*.tmp;cache\*
+  Pomijane zawsze    _SyncArchive, _SyncPending, $RECYCLE.BIN,
+                     System Volume Information, dowiazania (junction/symlink).
+  Porownywanie       Po dacie zmiany i rozmiarze.
+
+-------------------------------------------------------------------------------
+2.4  USUWANIE - TRZY WARIANTY
+-------------------------------------------------------------------------------
+  _SyncArchive       Plik przenoszony do folderu z data w celu. Bezpieczne,
+                     dziala takze na dyskach sieciowych. ZALECANE.
+  Kosz Windows       UWAGA: na dyskach sieciowych Kosz nie dziala - plik ginie.
+  Trwale             Bez odwrotu.
+
+  Przed kazdym usuwaniem przy recznej synchronizacji program pyta i pokazuje,
+  ile pozycji zniknie i gdzie trafia.
+
+  Zachowuj poprzednie wersje nadpisanych plikow    (domyslnie WLACZONE)
+     Zanim plik zostanie nadpisany, jego poprzednia wersja trafia do _SyncArchive.
+     To wlasnie dzieki temu da sie cofnac skutki zlego kierunku synchronizacji -
+     bez tego stara wersja po prostu zamazuje dobra i nie ma czego odzyskiwac.
+     Dziala tylko przy usuwaniu do _SyncArchive. Przeniesienie w obrebie tego
+     samego dysku to zmiana nazwy, wiec jest szybkie; kosztem jest miejsce
+     na dysku, ktore z czasem rosnie - patrz punkt nizej.
+
+-------------------------------------------------------------------------------
+2.4a  ARCHIWUM KOPII - SPRZATANIE
+-------------------------------------------------------------------------------
+  Archiwum jest tym, co pozwala cofnac bledna decyzje. Ale rosnie: kazde
+  usuniecie i kazde nadpisanie zostawia w _SyncArchive paczke z data i godzina.
+  Dlatego jest przycisk ARCHIWUM KOPII - pod lista zadan, obok "Usun wybrane
+  pliki".
+
+  Okno pokazuje dla zaznaczonego zadania:
+     - liste paczek, od najnowszej: kiedy powstala, ile ma dni, ile plikow,
+       ile zajmuje, gdzie lezy,
+     - podsumowanie: ile paczek i ile miejsca zajmuje razem,
+     - obie strony zadania, jesli obie maja swoje archiwum.
+
+  Co mozna zrobic:
+     Usun zaznaczone      Kasuje wybrane paczki (zaznacz kwadraciki albo wiersze).
+     Usun cala zawartosc  Czysci archiwum tego zadania do zera.
+     Otworz folder       Pokazuje _SyncArchive w Eksploratorze.
+     Odswiez             Przelicza od nowa.
+
+  Oba kasowania sa TRWALE i program pyta o potwierdzenie, pokazujac wczesniej,
+  ile plikow i ile megabajtow zniknie. Domyslnie zaznaczona jest odpowiedz NIE.
+  Po wyczyszczeniu archiwum nie da sie juz cofnac objetych nim decyzji.
+
+  KASUJ STARE PACZKI SAME   (domyslnie: nigdy)
+     Na dole okna wybierasz, po jakim czasie stare kopie maja znikac same:
+     nigdy, po 7, 14, 30, 60, 90 dniach, po pol roku albo po roku.
+     Ustawienie jest osobne dla kazdego zadania i zapisuje sie od razu.
+     Sprzatanie wykonuje sie po kazdej udanej synchronizacji tego zadania -
+     takze w tle - i zapisuje sie w dzienniku: ile paczek zniklo i ile
+     miejsca zwolnily. Paczki mlodsze niz ustawiony czas nie sa ruszane.
+
+  Uwaga na rozsadny kompromis: 30 dni to zwykle az nadto, zeby zauwazyc
+  pomylke, a jednoczesnie archiwum nie puchnie bez konca. "Nigdy" zostaw
+  tam, gdzie miejsca jest duzo, a dane sa nie do odtworzenia.
+
+-------------------------------------------------------------------------------
+2.5  PODGLAD ZMIAN
+-------------------------------------------------------------------------------
+  Lista tego, co zostanie zrobione, zanim cokolwiek sie stanie:
+     - rodzaj dzialania (kopiuj w prawo / w lewo, utworz folder, usun),
+     - sciezka, rozmiar, data po obu stronach, powod decyzji,
+     - kolory: usuwanie na czerwono, kopiowanie na niebiesko/zielono,
+       konflikty na pomaranczowo.
+  Sortowanie po kazdej kolumnie. Podwojne klikniecie otwiera plik w Eksploratorze.
+  "Pokaz pliki bez zmian" dokłada pozycje identyczne po obu stronach.
+
+  Usun wybrane pliki    Zaznacz pozycje (Ctrl/Shift, klawisz Delete) i skasuj
+                        recznie - z lewego, z prawego albo z obu naraz.
+                        Dziala zgodnie z ustawieniem "Usuwane pliki".
+
+  Po ponownym otwarciu programu widac OSTATNIO WYKONANE zmiany dla zadania.
+
+-------------------------------------------------------------------------------
+2.6  DZIENNIK
+-------------------------------------------------------------------------------
+  Przebieg pracy, NAJNOWSZE WPISY NA GORZE. Widac powod kazdego uruchomienia
+  ("co 15 min", "wykryto zmiany, cisza 30 sekund"), bledy i podsumowania.
+  Pelna historia trafia takze do plikow w podfolderze "logi", z data w nazwie.
+
+-------------------------------------------------------------------------------
+2.7  ZADANIA
+-------------------------------------------------------------------------------
+  Nowe / Duplikuj / Usun, zmiana kolejnosci strzalkami.
+  Kazde zadanie mozna wlaczyc i wylaczyc osobno ("Wlaczone").
+  Uruchom wszystkie wlaczone  - jeden przycisk na wszystkie zadania.
+  Przerwij                    - zatrzymuje prace w dowolnym momencie.
+  Archiwum kopii              - podglad i czyszczenie _SyncArchive (punkt 2.4a).
+
+  Na liscie przy zadaniu widac skrotem jego stan:
+     15m    harmonogram co 15 minut
+     5s     czas rzeczywisty z cisza 5 sekund
+     pauza  automatyka czeka na pierwsza reczna synchronizacje
+     !78    78 usuniec czeka na Twoja decyzje
+
+-------------------------------------------------------------------------------
+2.8  KOPIUJ / PRZENIES  (osobne narzedzie)
+-------------------------------------------------------------------------------
+  Jednorazowe przeniesienie albo skopiowanie duzej ilosci danych - bez
+  zakladania zadania. Do przeprowadzek i wgrywania na dysk sieciowy.
+     - Kopiuj (zrodlo zostaje) albo Przenies (zrodlo kasowane po skopiowaniu),
+     - liczba watkow,
+     - wznawianie przerwanych plikow (dla duzych plikow i sieci),
+     - ponowienia przy bledzie,
+     - nie nadpisuj nowszych plikow w celu,
+     - kopiuj takze puste foldery,
+     - pomijanie plikow wedlug wzorca,
+     - "Kopiuj polecenie" - wklada rownowazne polecenie do schowka.
+
+-------------------------------------------------------------------------------
+2.9  IKONA PRZY ZEGARKU
+-------------------------------------------------------------------------------
+  Pokaz okno, Synchronizuj wszystkie teraz, Kopiuj / Przenies,
+  Wstrzymaj automatyke, Zamknij program.
+  Zamkniecie okna chowa program do zasobnika - nie konczy pracy.
+
+
+###############################################################################
+  CZESC 3 - WYKRYWANIE USUNIEC
+###############################################################################
+
+DLACZEGO TO JEST TRUDNE
+
+  Usuniecie pliku NIE zostawia daty. Dlatego zasada "kto zrobil to ostatni"
+  tu nie wystarcza - te dwie sytuacje wygladaja IDENTYCZNIE:
+
+     - plik byl po obu stronach i ktos skasowal go po drugiej,
+     - plik jest nowy tutaj i nigdy go tam nie bylo.
+
+  W obu przypadkach widac to samo: "jest po lewej, nie ma po prawej".
+  Bez pamieci poprzedniego stanu nie da sie ich rozroznic - i dlatego wiekszosc
+  prostych synchronizatorow po prostu kopiuje z powrotem skasowane pliki.
+
+JAK ECHO SYNC TO ROZWIAZUJE
+
+  Po kazdej udanej synchronizacji zapisuje MIGAWKE - liste znanych sciezek
+  (podfolder "migawki"). Przy nastepnym przebiegu wie juz, co jest nowe,
+  a co zostalo skasowane.
+
+  Po wykryciu usuniecia:
+
+     1. Odklada kopie do _SyncPending - na czas decyzji, ze struktura katalogow.
+     2. NIE rusza tych pozycji. Ani nie kasuje, ani nie przywraca po cichu -
+        takze przy kopii lustrzanej. Stan jest zamrozony.
+     3. Pyta, dajac trzy wyjscia:
+
+           PRZYWROC        odtwarza je tam, gdzie zniknely, w to samo miejsce.
+                           Dziala w obie strony - niezaleznie od tego, na ktorym
+                           komputerze skasowales.
+           USUN TAKZE      kasuje je rowniez tam, gdzie jeszcze sa.
+           POZNIEJ         nic nie robi, przypomni przy nastepnej synchronizacji.
+
+     4. Po decyzji _SyncPending jest sprzatany - ale tylko z tego, co da sie
+        jeszcze odzyskac. Jesli w trakcie decyzji ktos skasowal OSTATNIA kopie,
+        plik zostaje w _SyncPending, a w dzienniku pojawia sie wpis URATOWANE.
+
+  Przyjecie usuniecia kasuje ostatnia kopie pliku, wiec zawsze trafia ona
+  najpierw do _SyncArchive - NAWET gdy zadanie ma ustawione usuwanie trwale.
+
+GDZIE TO WIDAC
+
+  Zolty pasek pod naglowkiem, przycisk "Decyzje do podjecia" przy liscie zadan
+  i znacznik przy zadaniu. Wszystkie trzy sa widoczne tak dlugo, az zdecydujesz.
+  Powiadomienie przy zegarku jest tylko dodatkiem - ono znika, sprawa zostaje.
+
+KIEDY MIGAWKA JEST KASOWANA
+
+  Przy zmianie folderow, kierunku, kopii lustrzanej albo wykluczen. Opisywalaby
+  wtedy poprzedni uklad i kazalaby usuwac rzeczy bez powodu. Pierwszy przebieg
+  po takiej zmianie buduje ja od nowa.
+
+
+###############################################################################
+  CZESC 4 - BEZPIECZENSTWO I ZASOBY
+###############################################################################
+
+CO PROGRAM ROBI, ZEBY NIE STRACIC DANYCH
+
+  - Kopia lustrzana PRZERYWA prace, gdy zrodlo jest puste, a cel nie.
+    Najczestsza przyczyna: nieodlaczony dysk sieciowy. Zamiast wyczyscic cel,
+    program sie zatrzymuje i mowi dlaczego.
+  - Pliki kopiowane sa przez nazwe tymczasowa i podmieniane dopiero na koniec -
+    przerwane kopiowanie nie zostawia polowki pliku pod wlasciwa nazwa.
+  - Pozycje zmienione w trakcie przebiegu sa pomijane i liczone osobno.
+  - Dowiazania (junction, symlink) sa pomijane - bez petli.
+  - _SyncArchive i _SyncPending nigdy nie sa synchronizowane.
+  - Ustawienia leza w zadania.xml obok programu. Instalator ich NIE nadpisuje.
+
+ILE ZUZYWA (zmierzone)
+
+  Pomiar na zywym procesie po 22 minutach pracy i 83 przebiegach
+  (680 pozycji po obu stronach, cel na dysku sieciowym):
+
+  W spoczynku    16 ms procesora przez 30 sekund
+                 = 0,05 % jednego rdzenia, 0,004 % calego procesora
+  Pamiec         68,6 MB robocza / 44,3 MB prywatna, 10 watkow
+  Szczyt pamieci 72 MB - czyli porownanie podnosi zuzycie o okolo 3 MB
+                 i po zakonczeniu wraca w dol
+  Czas           porownanie 680 pozycji przez siec - okolo sekundy
+
+  W spoczynku program nie odpytuje dysku - czeka na powiadomienie od systemu.
+  Wiekszosc z tych ~68 MB to narzut srodowiska .NET, nie sam program.
+  NIE BYLO SPRAWDZANE: zachowanie przy dziesiatkach tysiecy plikow i przy
+  wielogigabajtowych kopiach przez siec. Tam liczba pozycji podnosi zuzycie
+  pamieci na czas porownania.
+
+GDZIE CO LEZY
+
+  zadania.xml        ustawienia zadan
+  logi\              dzienniki z data w nazwie
+  historia\          ostatnio wykonane zmiany dla kazdego zadania
+  migawki\           pamiec stanu, potrzebna do wykrywania usuniec
+  _SyncArchive\      (w folderze docelowym) usuniete pliki, w podfolderach z data
+  _SyncPending\      (w folderze zrodlowym) kopie na czas decyzji o usunieciach

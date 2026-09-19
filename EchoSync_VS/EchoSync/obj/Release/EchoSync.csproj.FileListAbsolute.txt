@@ -1,0 +1,8 @@
+C:\Users\andro\Desktop\Moj Synchronizator folderów\EchoSync_VS\EchoSync\obj\Release\EchoSync.csproj.AssemblyReference.cache
+C:\Users\andro\Desktop\Moj Synchronizator folderów\EchoSync_VS\EchoSync\obj\Release\EchoSync.csproj.CoreCompileInputs.cache
+C:\Users\andro\Desktop\Moj Synchronizator folderów\EchoSync_VS\EchoSync\bin\Release\EchoSync.exe
+C:\Users\andro\Desktop\Moj Synchronizator folderów\EchoSync_VS\EchoSync\bin\Release\EchoSync.pdb
+C:\Users\andro\Desktop\Moj Synchronizator folderów\EchoSync_VS\EchoSync\obj\Release\EchoSync.exe
+C:\Users\andro\Desktop\Moj Synchronizator folderów\EchoSync_VS\EchoSync\obj\Release\EchoSync.pdb
+C:\Users\andro\Desktop\Moj Synchronizator folderów\EchoSync_VS\EchoSync\obj\Release\MojSync.MainForm.resources
+C:\Users\andro\Desktop\Moj Synchronizator folderów\EchoSync_VS\EchoSync\obj\Release\EchoSync.csproj.GenerateResource.cache
