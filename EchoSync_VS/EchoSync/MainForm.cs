@@ -2612,6 +2612,34 @@ namespace MojSync
                     var oryginal = tasks[ti];
                     var rt = taskRuntimes[ti];
                     if (engine.Cancel) break;
+
+                    // Folder zadania niedostępny (drugi komputer wyłączony, dysk odłączony)?
+                    // Pomijamy zadanie W CAŁOŚCI: pusty "cel" wyglądałby jak tysiące skasowanych
+                    // plików albo dziesiątki błędów kopiowania. Sprawdzamy foldery z konfiguracji
+                    // (bez dopisanego podfolderu - ten może jeszcze nie istnieć). Dziennik: raz,
+                    // potem najwyżej co godzinę; powrót dostępności też jest odnotowany.
+                    {
+                        string brak = null;
+                        foreach (var sciezka in new[] { oryginal.Left, oryginal.Right })
+                        {
+                            bool jest = false;
+                            try { jest = Directory.Exists(Engine.Norm(sciezka)); } catch { }
+                            if (!jest) { brak = sciezka; break; }
+                        }
+                        DateTime ost;
+                        if (brak != null)
+                        {
+                            if (!niedostepneLog.TryGetValue(oryginal.Name, out ost) || (DateTime.Now - ost).TotalMinutes >= 60)
+                            {
+                                niedostepneLog[oryginal.Name] = DateTime.Now;
+                                engine.Log("Pomijam \"" + t.Name + "\" – folder niedostępny: " + brak +
+                                           " (wyłączony komputer / odłączony dysk). Wrócę, gdy się pojawi.");
+                            }
+                            continue;
+                        }
+                        DateTime byl; if (niedostepneLog.TryRemove(oryginal.Name, out byl))
+                            engine.Log("\"" + t.Name + "\" – foldery znowu dostępne, synchronizuję.");
+                    }
                     var sw = Stopwatch.StartNew();
                     engine.Log("=== " + (execute ? "SYNCHRONIZACJA" : "ANALIZA") + ": " + t.Name + "  [" + t.Left + "  " +
                                (t.Direction == SyncDirection.LeftToRight ? "→" : t.Direction == SyncDirection.RightToLeft ? "←" : "⇄") +
@@ -3014,6 +3042,9 @@ namespace MojSync
 
         // ---------- wykrywanie "ping-pongu": te same pliki kopiowane w każdej synchronizacji,
         // bo inny program (np. na drugim komputerze) cofa je do starszej wersji
+        // kiedy ostatnio zalogowano niedostępność folderów zadania (dziennik bez powtórek)
+        readonly System.Collections.Concurrent.ConcurrentDictionary<string, DateTime> niedostepneLog = new System.Collections.Concurrent.ConcurrentDictionary<string, DateTime>();
+
         class PingPongState { public HashSet<string> Last; public int Streak; public DateTime LastRun, Warned; }
         readonly Dictionary<SyncTask, PingPongState> pingPong = new Dictionary<SyncTask, PingPongState>();
 
